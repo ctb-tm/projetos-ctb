@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dashboard CTB – Acompanhamento de Captação</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --ctb-primary-blue: #00467f;
@@ -20,9 +22,7 @@
             --shadow: 0 8px 24px rgba(0, 70, 127, 0.08);
             --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: var(--ctb-background);
             font-family: var(--font-family);
@@ -30,7 +30,6 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-
         header {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
@@ -42,38 +41,28 @@
             gap: 16px;
             box-shadow: var(--shadow);
         }
-
-        header img {
-            height: 56px;
-        }
-
+        header img { height: 56px; }
         header h1 {
             font-size: 1.8em;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-
         main {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
-
         #chart-container {
             background: var(--ctb-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 20px;
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 800px; /* Ajustado para melhor visualização */
             margin-left: auto;
             margin-right: auto;
+            height: 350px; /* Altura fixa para o container */
         }
-
-        canvas#captacaoChart {
-            max-height: 250px;
-        }
-
         .chart-legend {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
@@ -81,23 +70,22 @@
             padding: 12px 20px;
             border-radius: 8px;
             margin: 10px auto 30px auto;
-            max-width: 600px;
+            max-width: 800px; /* Ajustado para alinhar com o gráfico */
             font-weight: 500;
             font-size: 0.95em;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            flex-wrap: wrap; /* Adicionado para responsividade */
+            gap: 15px; /* Adicionado para espaçamento */
         }
-
         .chart-legend span { display: block; }
-
         .progress-summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajustado para melhor layout */
+            gap: 20px; /* Aumentado o espaçamento */
             margin-bottom: 32px;
         }
-
         .project-card {
             background: var(--ctb-white);
             border-radius: var(--border-radius);
@@ -106,52 +94,48 @@
             text-align: center;
             transition: transform var(--transition), box-shadow var(--transition);
         }
-
         .project-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 32px rgba(0, 70, 127, 0.15);
         }
-
         .project-card h3 {
-            font-size: 1em;
+            font-size: 1.1em; /* Aumentado */
             margin-bottom: 8px;
             color: var(--ctb-primary-blue);
+            min-height: 44px; /* Garante alinhamento */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
         .project-card .percentage {
-            font-size: 1.8em;
+            font-size: 2.2em; /* Aumentado */
             font-weight: 700;
             color: var(--ctb-secondary-blue);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             background: var(--ctb-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow: hidden; /* Garante que o border-radius seja aplicado nas bordas */
         }
-
         thead {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
         }
-
         th, td {
             padding: 16px;
             text-align: left;
             font-size: 0.95em;
+            border-bottom: 1px solid var(--ctb-border);
         }
-
+        tbody tr:last-child td { border-bottom: none; }
         tbody tr:nth-child(even) { background: #f4f8fc; }
         tbody tr:hover { background-color: #eef5fb; }
-
         .value { font-weight: 600; color: var(--ctb-primary-blue); }
-        .remaining { font-weight: 600; color: var(--ctb-secondary-blue); }
-
+        .remaining { font-weight: 600; color: #c0392b; } /* Cor alterada para destaque */
         .input-group { display: flex; gap: 8px; align-items: center; }
-
         input.currency-input {
             width: 120px;
             padding: 8px;
@@ -159,8 +143,8 @@
             border-radius: 6px;
             text-align: right;
             font-size: 0.9em;
+            font-family: var(--font-family);
         }
-
         button.update-btn {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
@@ -168,12 +152,11 @@
             border-radius: 6px;
             padding: 8px 14px;
             font-size: 0.85em;
+            font-weight: 600;
             cursor: pointer;
             transition: background var(--transition);
         }
-
         button.update-btn:hover { background: var(--ctb-success); }
-
         footer {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
@@ -181,14 +164,12 @@
             padding: 40px 20px;
             margin-top: 50px;
         }
-
         footer img { height: 60px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
     <header>
-        <img src="ctb.png" alt="CTB Logo">
-        <h1>Dashboard de Captação – CTB</h1>
+        <img src="https://i.imgur.com/2Y05b4s.png" alt="CTB Logo"> <h1>Dashboard de Captação – CTB</h1>
     </header>
 
     <main>
@@ -199,7 +180,7 @@
         <div id="chart-legend" class="chart-legend">
             <span id="totalAutorizado">Total Autorizado: R$ 0,00</span>
             <span id="totalCaptado">Total Captado: R$ 0,00</span>
-            <span id="percentualGeral">0% do total captado</span>
+            <span id="percentualGeral">0.0% do total captado</span>
         </div>
 
         <section id="progress-summary-container" class="progress-summary"></section>
@@ -271,130 +252,180 @@
     </main>
 
     <footer>
-        <img src="ctb1.png" alt="Selo CTB">
-        <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
+        <img src="https://i.imgur.com/cE5g26N.png" alt="Selo CTB"> <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
         <p>Todos os direitos reservados © CTB 2025</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const table = document.getElementById('projects-table');
-            const summaryContainer = document.getElementById('progress-summary-container');
-            const ctx = document.getElementById('captacaoChart');
-            const totalAutorizadoEl = document.getElementById('totalAutorizado');
-            const totalCaptadoEl = document.getElementById('totalCaptado');
-            const percentualGeralEl = document.getElementById('percentualGeral');
+    document.addEventListener('DOMContentLoaded', () => {
+        const table = document.getElementById('projects-table');
+        const summaryContainer = document.getElementById('progress-summary-container');
+        const ctx = document.getElementById('captacaoChart').getContext('2d');
+        const totalAutorizadoEl = document.getElementById('totalAutorizado');
+        const totalCaptadoEl = document.getElementById('totalCaptado');
+        const percentualGeralEl = document.getElementById('percentualGeral');
 
-            let chartInstance;
+        let chartInstance;
 
-            const formatCurrencyInput = (input) => {
-                let value = input.value.replace(/\D/g, '');
-                value = (parseInt(value, 10) / 100).toFixed(2);
-                if (isNaN(value)) value = '0.00';
-                const formattedValue = parseFloat(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                input.value = formattedValue;
+        // Função para formatar o valor monetário no input
+        const formatCurrencyInput = (input) => {
+            let value = input.value.replace(/\D/g, '');
+            if (value === '') {
+                input.value = '';
+                return;
+            }
+            value = (parseInt(value, 10) / 100);
+            input.value = value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+
+        // Função para converter o texto formatado (R$ 1.234,56 ou 1.234,56) em número
+        const parseCurrency = (text) => {
+            if (!text) return 0;
+            return parseFloat(text.replace(/R\$\s?/, '').replace(/\./g, '').replace(',', '.')) || 0;
+        };
+
+        const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Atualiza os cálculos da linha (valor restante)
+        const updateRowCalculations = (row) => {
+            const autorizadoText = row.querySelector('.value').textContent;
+            const captadoInput = row.querySelector('.currency-input');
+            const restanteCell = row.querySelector('.remaining');
+
+            const autorizadoValue = parseCurrency(autorizadoText);
+            const captadoValue = parseCurrency(captadoInput.value);
+            let restanteValue = autorizadoValue - captadoValue;
+            if (restanteValue < 0) restanteValue = 0;
+
+            restanteCell.textContent = formatToBRL(restanteValue);
+        };
+
+        // Atualiza os totais gerais acima dos cards
+        const updateLegend = () => {
+            const rows = table.querySelectorAll('tbody tr');
+            let totalAutorizado = 0;
+            let totalCaptado = 0;
+
+            rows.forEach(row => {
+                totalAutorizado += parseCurrency(row.querySelector('.value').textContent);
+                totalCaptado += parseCurrency(row.querySelector('.currency-input').value);
+            });
+
+            totalAutorizadoEl.textContent = `Total Autorizado: ${formatToBRL(totalAutorizado)}`;
+            totalCaptadoEl.textContent = `Total Captado: ${formatToBRL(totalCaptado)}`;
+
+            let percentual = totalAutorizado > 0 ? (totalCaptado / totalAutorizado) * 100 : 0;
+            percentualGeralEl.textContent = `${percentual.toFixed(1)}% do total captado`;
+        };
+        
+        // Atualiza o gráfico de barras
+        const updateChart = () => {
+            const rows = table.querySelectorAll('tbody tr');
+            const labels = [];
+            const data = [];
+
+            rows.forEach(row => {
+                labels.push(row.cells[0].textContent);
+                const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
+                const captadoValue = parseCurrency(row.querySelector('.currency-input').value);
+                const percentage = autorizadoValue > 0 ? (captadoValue / autorizadoValue) * 100 : 0;
+                data.push(percentage.toFixed(1));
+            });
+
+            const chartData = {
+                labels,
+                datasets: [{
+                    label: 'Percentual Captado (%)',
+                    data,
+                    backgroundColor: 'rgba(26, 117, 207, 0.6)',
+                    borderColor: '#00467f',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
             };
 
-            const parseCurrency = (text) => parseFloat(text.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-
-            const updateRowCalculations = (row) => {
-                const autorizadoText = row.querySelector('.value').textContent;
-                const captadoInput = row.querySelector('.currency-input');
-                const restanteCell = row.querySelector('.remaining');
-
-                const autorizadoValue = parseCurrency(autorizadoText);
-                const captadoValue = parseCurrency(captadoInput.value || '0');
-                let restanteValue = autorizadoValue - captadoValue;
-                if (restanteValue < 0) restanteValue = 0;
-
-                restanteCell.textContent = restanteValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            };
-
-            const updateLegend = () => {
-                const rows = table.querySelectorAll('tbody tr');
-                let totalAutorizado = 0;
-                let totalCaptado = 0;
-
-                rows.forEach(row => {
-                    totalAutorizado += parseCurrency(row.querySelector('.value').textContent);
-                    totalCaptado += parseCurrency(row.querySelector('.currency-input').value || '0');
-                });
-
-                totalAutorizadoEl.textContent = `Total Autorizado: ${totalAutorizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
-                totalCaptadoEl.textContent = `Total Captado: ${totalCaptado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
-
-                let percentual = totalAutorizado > 0 ? (totalCaptado / totalAutorizado) * 100 : 0;
-                percentualGeralEl.textContent = `${percentual.toFixed(1)}% do total captado`;
-            };
-
-            const updateChart = () => {
-                const rows = table.querySelectorAll('tbody tr');
-                const labels = [];
-                const data = [];
-
-                rows.forEach(row => {
-                    labels.push(row.cells[0].textContent);
-                    const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
-                    const captadoValue = parseCurrency(row.querySelector('.currency-input').value || '0');
-                    data.push(((captadoValue / autorizadoValue) * 100).toFixed(1));
-                });
-
-                const chartData = {
-                    labels,
-                    datasets: [{
-                        label: 'Percentual Captado (%)',
-                        data,
-                        backgroundColor: 'rgba(26, 117, 207, 0.6)',
-                        borderColor: '#00467f',
-                        borderWidth: 2,
-                        borderRadius: 6
-                    }]
-                };
-
-                const config = {
-                    type: 'bar',
-                    data: chartData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: { color: '#00467f' },
-                                grid: { color: '#dbe9f5' }
-                            },
-                            x: {
-                                ticks: { color: '#00467f' },
-                                grid: { display: false }
-                            }
+            const config = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#00467f', callback: value => `${value}%` },
+                            grid: { color: '#dbe9f5' }
                         },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { callbacks: { label: ctx => `${ctx.parsed.y}% captado` } }
+                        x: {
+                            ticks: { color: '#00467f' },
+                            grid: { display: false }
                         }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1)}% captado` } }
                     }
-                };
-
-                if (chartInstance) chartInstance.destroy();
-                chartInstance = new Chart(ctx, config);
+                }
             };
 
-            const updateSummaryPanel = () => {
-                summaryContainer.innerHTML = '';
-                const rows = table.querySelectorAll('tbody tr');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, config);
+        };
 
-                rows.forEach(row => {
-                    const projectName = row.cells[0].textContent;
-                    const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
-                    const captadoValue = parseCurrency(row.querySelector('.currency-input').value || '0');
-                    let percentage = 0;
-                    if (autorizadoValue > 0) percentage = (captadoValue / autorizadoValue) * 100;
+        // Atualiza os cards de resumo de cada projeto
+        const updateSummaryPanel = () => {
+            summaryContainer.innerHTML = '';
+            const rows = table.querySelectorAll('tbody tr');
 
-                    const card = document.createElement('div');
-                    card.className = 'project-card';
-                    card.innerHTML = `<h3>${projectName}</h3><div class='percentage'>${percentage.toFixed(1)}%</div>`;
-                    summaryContainer.appendChild(card);
-                });
-                updateChart();
-               
+            rows.forEach(row => {
+                const projectName = row.cells[0].textContent;
+                const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
+                const captadoValue = parseCurrency(row.querySelector('.currency-input').value);
+                let percentage = autorizadoValue > 0 ? (captadoValue / autorizadoValue) * 100 : 0;
+
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `<h3>${projectName}</h3><div class='percentage'>${percentage.toFixed(1)}%</div>`;
+                summaryContainer.appendChild(card);
+            });
+        };
+
+        // Função central para atualizar todo o dashboard
+        const updateDashboard = () => {
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(updateRowCalculations);
+            updateLegend();
+            updateSummaryPanel();
+            updateChart();
+        };
+
+        // --- EVENT LISTENERS ---
+
+        // Adiciona eventos aos botões e inputs usando delegação de eventos na tabela
+        table.addEventListener('click', (e) => {
+            if (e.target.classList.contains('update-btn')) {
+                updateDashboard();
+            }
+        });
+
+        table.addEventListener('input', (e) => {
+            if (e.target.classList.contains('currency-input')) {
+                formatCurrencyInput(e.target);
+            }
+        });
+
+        table.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.classList.contains('currency-input')) {
+                e.preventDefault(); // Impede o comportamento padrão do Enter
+                updateDashboard();
+            }
+        });
+
+        // --- CHAMADA INICIAL ---
+        // Chama a função principal para carregar o dashboard quando a página abre
+        updateDashboard();
+    });
+    </script>
+</body>
+</html>
