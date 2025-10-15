@@ -58,10 +58,10 @@
             box-shadow: var(--shadow);
             padding: 20px;
             margin-bottom: 30px;
-            max-width: 800px; /* Ajustado para melhor visualização */
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            height: 350px; /* Altura fixa para o container */
+            height: 300px; /* ALTURA DO GRÁFICO REDUZIDA */
         }
         .chart-legend {
             background: var(--ctb-primary-blue);
@@ -70,20 +70,20 @@
             padding: 12px 20px;
             border-radius: 8px;
             margin: 10px auto 30px auto;
-            max-width: 800px; /* Ajustado para alinhar com o gráfico */
+            max-width: 800px;
             font-weight: 500;
             font-size: 0.95em;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            flex-wrap: wrap; /* Adicionado para responsividade */
-            gap: 15px; /* Adicionado para espaçamento */
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .chart-legend span { display: block; }
         .progress-summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajustado para melhor layout */
-            gap: 20px; /* Aumentado o espaçamento */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin-bottom: 32px;
         }
         .project-card {
@@ -99,16 +99,16 @@
             box-shadow: 0 12px 32px rgba(0, 70, 127, 0.15);
         }
         .project-card h3 {
-            font-size: 1.1em; /* Aumentado */
+            font-size: 1.1em;
             margin-bottom: 8px;
             color: var(--ctb-primary-blue);
-            min-height: 44px; /* Garante alinhamento */
+            min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .project-card .percentage {
-            font-size: 2.2em; /* Aumentado */
+            font-size: 2.2em;
             font-weight: 700;
             color: var(--ctb-secondary-blue);
         }
@@ -118,7 +118,7 @@
             background: var(--ctb-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            overflow: hidden; /* Garante que o border-radius seja aplicado nas bordas */
+            overflow: hidden;
         }
         thead {
             background: var(--ctb-primary-blue);
@@ -134,7 +134,7 @@
         tbody tr:nth-child(even) { background: #f4f8fc; }
         tbody tr:hover { background-color: #eef5fb; }
         .value { font-weight: 600; color: var(--ctb-primary-blue); }
-        .remaining { font-weight: 600; color: #c0392b; } /* Cor alterada para destaque */
+        .remaining { font-weight: 600; color: #c0392b; }
         .input-group { display: flex; gap: 8px; align-items: center; }
         input.currency-input {
             width: 120px;
@@ -169,7 +169,8 @@
 </head>
 <body>
     <header>
-        <img src="https://i.imgur.com/2Y05b4s.png" alt="CTB Logo"> <h1>Dashboard de Captação – CTB</h1>
+        <img src="https://i.imgur.com/2Y05b4s.png" alt="CTB Logo">
+        <h1>Dashboard de Captação – CTB</h1>
     </header>
 
     <main>
@@ -252,7 +253,8 @@
     </main>
 
     <footer>
-        <img src="https://i.imgur.com/cE5g26N.png" alt="Selo CTB"> <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
+        <img src="https://i.imgur.com/cE5g26N.png" alt="Selo CTB">
+        <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
         <p>Todos os direitos reservados © CTB 2025</p>
     </footer>
 
@@ -260,14 +262,15 @@
     document.addEventListener('DOMContentLoaded', () => {
         const table = document.getElementById('projects-table');
         const summaryContainer = document.getElementById('progress-summary-container');
+        // CORREÇÃO CRÍTICA: É preciso obter o '2d context' do canvas
         const ctx = document.getElementById('captacaoChart').getContext('2d');
         const totalAutorizadoEl = document.getElementById('totalAutorizado');
         const totalCaptadoEl = document.getElementById('totalCaptado');
         const percentualGeralEl = document.getElementById('percentualGeral');
 
         let chartInstance;
+        const STORAGE_KEY = 'ctbDashboardData';
 
-        // Função para formatar o valor monetário no input
         const formatCurrencyInput = (input) => {
             let value = input.value.replace(/\D/g, '');
             if (value === '') {
@@ -278,7 +281,6 @@
             input.value = value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         };
 
-        // Função para converter o texto formatado (R$ 1.234,56 ou 1.234,56) em número
         const parseCurrency = (text) => {
             if (!text) return 0;
             return parseFloat(text.replace(/R\$\s?/, '').replace(/\./g, '').replace(',', '.')) || 0;
@@ -286,67 +288,55 @@
 
         const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-        // Atualiza os cálculos da linha (valor restante)
         const updateRowCalculations = (row) => {
             const autorizadoText = row.querySelector('.value').textContent;
             const captadoInput = row.querySelector('.currency-input');
             const restanteCell = row.querySelector('.remaining');
-
             const autorizadoValue = parseCurrency(autorizadoText);
             const captadoValue = parseCurrency(captadoInput.value);
             let restanteValue = autorizadoValue - captadoValue;
             if (restanteValue < 0) restanteValue = 0;
-
             restanteCell.textContent = formatToBRL(restanteValue);
         };
 
-        // Atualiza os totais gerais acima dos cards
         const updateLegend = () => {
             const rows = table.querySelectorAll('tbody tr');
             let totalAutorizado = 0;
             let totalCaptado = 0;
-
             rows.forEach(row => {
                 totalAutorizado += parseCurrency(row.querySelector('.value').textContent);
                 totalCaptado += parseCurrency(row.querySelector('.currency-input').value);
             });
-
             totalAutorizadoEl.textContent = `Total Autorizado: ${formatToBRL(totalAutorizado)}`;
             totalCaptadoEl.textContent = `Total Captado: ${formatToBRL(totalCaptado)}`;
-
             let percentual = totalAutorizado > 0 ? (totalCaptado / totalAutorizado) * 100 : 0;
             percentualGeralEl.textContent = `${percentual.toFixed(1)}% do total captado`;
         };
         
-        // Atualiza o gráfico de barras
         const updateChart = () => {
             const rows = table.querySelectorAll('tbody tr');
-            const labels = [];
-            const data = [];
-
-            rows.forEach(row => {
-                labels.push(row.cells[0].textContent);
+            const labels = Array.from(rows).map(row => row.cells[0].textContent);
+            const data = Array.from(rows).map(row => {
                 const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
                 const captadoValue = parseCurrency(row.querySelector('.currency-input').value);
-                const percentage = autorizadoValue > 0 ? (captadoValue / autorizadoValue) * 100 : 0;
-                data.push(percentage.toFixed(1));
+                return autorizadoValue > 0 ? ((captadoValue / autorizadoValue) * 100).toFixed(1) : 0;
             });
 
-            const chartData = {
-                labels,
-                datasets: [{
-                    label: 'Percentual Captado (%)',
-                    data,
-                    backgroundColor: 'rgba(26, 117, 207, 0.6)',
-                    borderColor: '#00467f',
-                    borderWidth: 2,
-                    borderRadius: 6
-                }]
-            };
+            if (chartInstance) chartInstance.destroy();
 
-            const config = {
+            chartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: chartData,
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Percentual Captado (%)',
+                        data,
+                        backgroundColor: 'rgba(26, 117, 207, 0.6)',
+                        borderColor: '#00467f',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -357,55 +347,67 @@
                             ticks: { color: '#00467f', callback: value => `${value}%` },
                             grid: { color: '#dbe9f5' }
                         },
-                        x: {
-                            ticks: { color: '#00467f' },
-                            grid: { display: false }
-                        }
+                        x: { ticks: { color: '#00467f' }, grid: { display: false } }
                     },
                     plugins: {
                         legend: { display: false },
-                        tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1)}% captado` } }
+                        tooltip: { callbacks: { label: ctx => `${parseFloat(ctx.raw).toFixed(1)}% captado` } }
                     }
                 }
-            };
-
-            if (chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, config);
+            });
         };
 
-        // Atualiza os cards de resumo de cada projeto
         const updateSummaryPanel = () => {
             summaryContainer.innerHTML = '';
             const rows = table.querySelectorAll('tbody tr');
-
             rows.forEach(row => {
                 const projectName = row.cells[0].textContent;
                 const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
                 const captadoValue = parseCurrency(row.querySelector('.currency-input').value);
                 let percentage = autorizadoValue > 0 ? (captadoValue / autorizadoValue) * 100 : 0;
-
                 const card = document.createElement('div');
                 card.className = 'project-card';
                 card.innerHTML = `<h3>${projectName}</h3><div class='percentage'>${percentage.toFixed(1)}%</div>`;
                 summaryContainer.appendChild(card);
             });
         };
+        
+        // --- FUNÇÕES DE DADOS (LocalStorage) ---
 
-        // Função central para atualizar todo o dashboard
+        const saveData = () => {
+            const data = {};
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const id = row.dataset.id;
+                const value = row.querySelector('.currency-input').value;
+                if (id) data[id] = value;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        };
+        
+        const loadData = () => {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const id = row.dataset.id;
+                if (id && data[id]) {
+                    const input = row.querySelector('.currency-input');
+                    input.value = data[id];
+                }
+            });
+        };
+
         const updateDashboard = () => {
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(updateRowCalculations);
+            table.querySelectorAll('tbody tr').forEach(updateRowCalculations);
             updateLegend();
             updateSummaryPanel();
             updateChart();
         };
 
-        // --- EVENT LISTENERS ---
+        // --- EVENTOS ---
 
-        // Adiciona eventos aos botões e inputs usando delegação de eventos na tabela
         table.addEventListener('click', (e) => {
             if (e.target.classList.contains('update-btn')) {
                 updateDashboard();
+                saveData(); // Salva os dados após atualizar
             }
         });
 
@@ -417,14 +419,15 @@
 
         table.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.classList.contains('currency-input')) {
-                e.preventDefault(); // Impede o comportamento padrão do Enter
+                e.preventDefault();
                 updateDashboard();
+                saveData(); // Salva os dados após atualizar
             }
         });
 
-        // --- CHAMADA INICIAL ---
-        // Chama a função principal para carregar o dashboard quando a página abre
-        updateDashboard();
+        // --- INICIALIZAÇÃO ---
+        loadData();      // 1. Carrega os dados salvos primeiro
+        updateDashboard(); // 2. Roda todos os cálculos e desenha o gráfico com os dados carregados
     });
     </script>
 </body>
