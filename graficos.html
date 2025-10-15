@@ -269,10 +269,7 @@
 
         let chartInstance;
         
-        // <<< IMPORTANTE: Altere esta chave para ser EXATAMENTE a mesma usada na sua segunda página
         const STORAGE_KEY = 'ctbDashboardData';
-
-        // --- FUNÇÕES DE DADOS E LÓGICA ---
 
         const parseCurrency = (text) => {
             if (!text) return 0;
@@ -281,7 +278,6 @@
 
         const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-        // Função para carregar os dados do LocalStorage e preencher os inputs
         const loadData = () => {
             const savedData = localStorage.getItem(STORAGE_KEY);
             if (!savedData) {
@@ -295,12 +291,11 @@
                 const id = row.dataset.id;
                 if (id && data[id]) {
                     const input = row.querySelector('.currency-input');
-                    input.value = data[id]; // Preenche o input com o valor salvo
+                    input.value = data[id];
                 }
             });
         };
         
-        // Função para salvar os dados atuais da tabela no LocalStorage
         const saveData = () => {
             const data = {};
             table.querySelectorAll('tbody tr').forEach(row => {
@@ -309,11 +304,7 @@
                 if (id) data[id] = value;
             });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            // Opcional: Alerta para confirmar que os dados foram salvos
-            // alert('Dados atualizados e salvos com sucesso!');
         };
-
-        // --- FUNÇÕES DE ATUALIZAÇÃO DA INTERFACE ---
 
         const formatCurrencyInput = (input) => {
             let value = input.value.replace(/\D/g, '');
@@ -392,7 +383,6 @@
             });
         };
         
-        // Função central para atualizar todo o dashboard
         const updateDashboard = () => {
             table.querySelectorAll('tbody tr').forEach(updateRowCalculations);
             updateLegend();
@@ -400,12 +390,10 @@
             updateChart();
         };
 
-        // --- EVENTOS E INICIALIZAÇÃO ---
-
         table.addEventListener('click', (e) => {
             if (e.target.classList.contains('update-btn')) {
                 updateDashboard();
-                saveData(); // Salva os dados após atualizar
+                saveData();
             }
         });
 
@@ -419,13 +407,12 @@
             if (e.key === 'Enter' && e.target.classList.contains('currency-input')) {
                 e.preventDefault();
                 updateDashboard();
-                saveData(); // Salva os dados após atualizar
+                saveData();
             }
         });
 
-        // --- LÓGICA DE INICIALIZAÇÃO DA PÁGINA ---
-        loadData();        // 1. Lê os dados do localStorage e preenche os campos
-        updateDashboard(); // 2. Com os campos preenchidos, calcula e exibe todo o resto
+        loadData();
+        updateDashboard();
     });
     </script>
 </body>
