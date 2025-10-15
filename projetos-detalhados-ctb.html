@@ -45,7 +45,7 @@
         .ctb-header h1 { font-size: 2em; font-weight: 600; }
 
         .progress-summary {
-            background: var(--ctb-primary-blue); /* Consistência com a marca */
+            background: var(--ctb-primary-blue);
             color: var(--ctb-white);
             padding: 20px;
             margin: 0 auto 25px auto;
@@ -108,6 +108,28 @@
             transition: var(--transition);
         }
         .update-btn:hover { background: var(--ctb-success); }
+        
+        /* INÍCIO DO CSS PARA O NOVO BOTÃO */
+        .nav-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--ctb-secondary-blue);
+            color: var(--ctb-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none; /* Remove o sublinhado do link */
+            font-weight: 600;
+            font-size: 1em;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-btn:hover {
+            background: var(--ctb-primary-blue);
+            transform: translateY(-2px); /* Efeito de elevação */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        /* FIM DO CSS PARA O NOVO BOTÃO */
         
         .ctb-footer {
             background: var(--ctb-primary-blue);
@@ -226,11 +248,14 @@
                         <td class="remaining">R$ 1.420.619,43</td>
                         <td>1599 / 00000-0</td>
                     </tr>
-                    </tbody>
+                </tbody>
             </table>
         </main>
     </div>
 
+    <div class="container" style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
+        <a href="graficos.html" class="nav-btn">Ver Gráficos 📊</a>
+    </div>
     <footer class="ctb-footer">
         <img src="ctb1.png" alt="Selo CTB"/>
         <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
