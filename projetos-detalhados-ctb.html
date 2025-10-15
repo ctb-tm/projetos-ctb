@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Infográfico CTB – Projetos LIE</title>
+  <title>Infográfico CTB – Pagina 2</title>
   <style>
     :root {
       --ctb-blue: #00467f;
@@ -37,22 +37,6 @@
       font-size: 1.8em;
       vertical-align: middle;
     }
-    .project-tiles {
-      background: var(--ctb-blue);
-      color: var(--ctb-white);
-      padding: 15px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .project-tile {
-      flex: 1 1 calc(33.333% - 20px);
-      background: var(--ctb-light-blue);
-      padding: 8px;
-      border-radius: var(--border-radius);
-      font-size: 0.85em;
-      text-align: center;
-    }
     .infographic {
       background: var(--ctb-white);
       border-radius: var(--border-radius);
@@ -84,62 +68,67 @@
       color: var(--ctb-white);
       transition: var(--transition);
     }
-    .value, .captured, .remaining {
+    .value {
       font-weight: 600;
+      color: var(--ctb-text);
     }
-    .remaining::before {
-      content: "↻ ";
+    .captured, .remaining {
+      font-weight: 600;
+      width: 100px;
     }
-    input[type="text"] {
-      width: 100%;
+    .remaining::before { content: "↻ "; }
+    input[type="number"] {
+      width: 100px;
       padding: 6px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      text-align: right;
     }
-    @media (max-width: 768px) {
-      .project-tile { flex: 1 1 100%; }
+    button {
+      padding: 6px 12px;
+      margin-left: 4px;
+      background: var(--ctb-blue);
+      color: var(--ctb-white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    button:hover {
+      background: var(--ctb-light-blue);
     }
   </style>
 </head>
 <body>
 
-  <!-- Cabeçalho padrão CTB -->
+  <!-- Cabeçalho padrão CTB (mesmo da primeira página) -->
   <div class="ctb-header">
     <img src="logo-ctb.png" alt="CTB Logo"/>
     <h1>Clube dos Tenistas da Bahia</h1>
   </div>
 
-  <!-- Box azul com projetos e percentual restante -->
-  <div class="project-tiles">
-    <div class="project-tile">Teofilândia – 100% restante</div>
-    <div class="project-tile">Simões Filho – 100% restante</div>
-    <div class="project-tile">Salvador (Oficinas) – 100% restante</div>
-    <div class="project-tile">Salvador (Festival) – 100% restante</div>
-    <div class="project-tile">Barrocas – 100% restante</div>
-  </div>
-
-  <!-- Tabela Infográfico -->
+  <!-- Tabela interativa de captação -->
   <div class="infographic">
     <table>
       <thead>
         <tr>
           <th>Processo</th>
           <th>Projeto</th>
-          <th>Valor Autorizado</th>
+          <th>Autorizado</th>
           <th>Captado (R$)</th>
           <th>Restante (R$)</th>
           <th>Agência</th>
           <th>Conta</th>
-          <th>Captação até</th>
+          <th>Até</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>71000.040486/2024-42</td>
           <td>Estudar em Teofilândia</td>
-          <td><span class="value">R$ 446.141,44</span></td>
-          <td><input type="text" placeholder="Digite captado"/></td>
-          <td><span class="remaining"></span></td>
+          <td class="value">R$ 446.141,44</td>
+          <td><input type="number" id="cap1" min="0" step="0.01"/><button onclick="atualizar(1)">Atualizar</button></td>
+          <td class="remaining" id="rest1">R$ 446.141,44</td>
           <td>1599</td>
           <td>87549-X</td>
           <td>29/05/2027</td>
@@ -147,9 +136,9 @@
         <tr>
           <td>71000.040483/2024-17</td>
           <td>Estudar em Simões Filho</td>
-          <td><span class="value">R$ 446.141,44</span></td>
-          <td><input type="text" placeholder="Digite captado"/></td>
-          <td><span class="remaining"></span></td>
+          <td class="value">R$ 446.141,44</td>
+          <td><input type="number" id="cap2" min="0" step="0.01"/><button onclick="atualizar(2)">Atualizar</button></td>
+          <td class="remaining" id="rest2">R$ 446.141,44</td>
           <td>1599</td>
           <td>87550-3</td>
           <td>29/05/2027</td>
@@ -157,9 +146,9 @@
         <tr>
           <td>71000.052256/2025-15</td>
           <td>Oficinas em Salvador – BA</td>
-          <td><span class="value">R$ 1.422.834,56</span></td>
-          <td><input type="text" placeholder="Digite captado"/></td>
-          <td><span class="remaining"></span></td>
+          <td class="value">R$ 1.422.834,56</td>
+          <td><input type="number" id="cap3" min="0" step="0.01"/><button onclick="atualizar(3)">Atualizar</button></td>
+          <td class="remaining" id="rest3">R$ 1.422.834,56</td>
           <td>1599</td>
           <td>88272-0</td>
           <td>14/08/2027</td>
@@ -167,9 +156,9 @@
         <tr>
           <td>71000.055113/2025-57</td>
           <td>Festival de Esportes da Bahia</td>
-          <td><span class="value">R$ 940.459,52</span></td>
-          <td><input type="text" placeholder="Digite captado"/></td>
-          <td><span class="remaining"></span></td>
+          <td class="value">R$ 940.459,52</td>
+          <td><input type="number" id="cap4" min="0" step="0.01"/><button onclick="atualizar(4)">Atualizar</button></td>
+          <td class="remaining" id="rest4">R$ 940.459,52</td>
           <td>1599</td>
           <td>88298-4</td>
           <td>14/08/2027</td>
@@ -177,9 +166,9 @@
         <tr>
           <td>71000.040438/2024-54</td>
           <td>Estudar em Barrocas</td>
-          <td><span class="value">R$ 446.141,44</span></td>
-          <td><input type="text" placeholder="Digite captado"/></td>
-          <td><span class="remaining"></span></td>
+          <td class="value">R$ 446.141,44</td>
+          <td><input type="number" id="cap5" min="0" step="0.01"/><button onclick="atualizar(5)">Atualizar</button></td>
+          <td class="remaining" id="rest5">R$ 446.141,44</td>
           <td>1599</td>
           <td>88311-5</td>
           <td>14/08/2027</td>
@@ -188,11 +177,22 @@
     </table>
   </div>
 
-  <!-- Rodapé padrão CTB -->
+  <!-- Rodapé padrão CTB (mesmo da primeira página) -->
   <div class="ctb-footer">
     <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
     <p>Todos os direitos reservados © CTB 2025</p>
   </div>
+
+  <script>
+    // Função para atualizar valor restante
+    function atualizar(i) {
+      const autorizado = parseFloat(document.querySelector(`#rest${i}`).textContent.replace(/[^0-9\,]/g, '').replace(',', '.'));
+      let captado = parseFloat(document.getElementById(`cap${i}`).value) || 0;
+      let restante = autorizado - captado;
+      if (restante < 0) restante = 0;
+      document.getElementById(`rest${i}`).textContent = 'R$ ' + restante.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+  </script>
 
 </body>
 </html>
