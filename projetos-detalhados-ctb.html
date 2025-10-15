@@ -7,8 +7,10 @@
     
     <style>
         :root {
-            --ctb-blue-dark: #00467f;
-            --ctb-blue-light: #1a75cf;
+            /* Cor primária definida como a cor oficial do CTB */
+            --ctb-primary-blue: #00467f; 
+            
+            --ctb-secondary-blue: #1a75cf;
             --ctb-white: #ffffff;
             --ctb-background: #f0f4f8;
             --ctb-text: #34495e;
@@ -28,13 +30,13 @@
         }
         
         .ctb-header {
-            background: linear-gradient(90deg, var(--ctb-blue-light), var(--ctb-blue-dark));
+            background: var(--ctb-primary-blue);
             color: var(--ctb-white);
             text-align: center;
             padding: 25px 20px;
             border-radius: var(--border-radius);
-            margin: 20px auto; /* Centrado */
-            width: 80%; /* Largura de 80% */
+            margin: 20px auto;
+            width: 80%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,7 +45,7 @@
         .ctb-header h1 { font-size: 2em; font-weight: 600; }
 
         .progress-summary {
-            background: var(--ctb-blue-dark);
+            background: var(--ctb-primary-blue); /* Consistência com a marca */
             color: var(--ctb-white);
             padding: 20px;
             margin: 0 auto 25px auto;
@@ -54,7 +56,7 @@
             gap: 15px;
         }
         .project-card {
-            background: var(--ctb-blue-light);
+            background: var(--ctb-secondary-blue);
             padding: 15px;
             border-radius: 8px;
             text-align: center;
@@ -78,13 +80,13 @@
 
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px; text-align: left; font-size: 0.95em; }
-        thead th { font-weight: 600; color: var(--ctb-blue-dark); border-bottom: 2px solid var(--ctb-border); }
+        thead th { font-weight: 600; color: var(--ctb-primary-blue); border-bottom: 2px solid var(--ctb-border); }
         tbody tr { border-bottom: 1px solid var(--ctb-border); }
         tbody tr:last-child { border-bottom: none; }
         tbody tr:hover { background-color: var(--ctb-background); }
         
         .value { font-weight: 600; }
-        .remaining { font-weight: 600; color: var(--ctb-blue-light); }
+        .remaining { font-weight: 600; color: var(--ctb-secondary-blue); }
         
         .input-group { display: flex; align-items: center; gap: 10px; }
         input[type="text"].currency-input {
@@ -98,7 +100,7 @@
         }
         .update-btn {
             padding: 8px 15px;
-            background: var(--ctb-blue-dark);
+            background: var(--ctb-primary-blue);
             color: var(--ctb-white);
             border: none;
             border-radius: 6px;
@@ -108,7 +110,7 @@
         .update-btn:hover { background: var(--ctb-success); }
         
         .ctb-footer {
-            background: var(--ctb-blue-dark);
+            background: var(--ctb-primary-blue);
             color: var(--ctb-white);
             text-align: center;
             padding: 30px 20px;
@@ -212,7 +214,7 @@
                         <td class="remaining">R$ 707.312,56</td>
                         <td>1599 / 786660-1</td>
                     </tr>
-                    </tbody>
+                </tbody>
             </table>
         </main>
     </div>
@@ -224,116 +226,98 @@
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const table = document.getElementById('projects-table');
-        const summaryContainer = document.getElementById('progress-summary-container');
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = document.getElementById('projects-table');
+            const summaryContainer = document.getElementById('progress-summary-container');
 
-        // FUNÇÃO 1: Formatar o valor no campo de input
-        const formatCurrencyInput = (input) => {
-            let value = input.value.replace(/\D/g, '');
-            value = (parseInt(value, 10) / 100).toFixed(2);
-            if (isNaN(value)) value = "0.00";
-            
-            const formattedValue = parseFloat(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            input.value = formattedValue;
-        };
-        
-        // FUNÇÃO 2: Converter texto de moeda para número (ex: "R$ 1.234,56" -> 1234.56)
-        const parseCurrency = (text) => {
-            return parseFloat(text.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-        };
-
-        // FUNÇÃO 3: Atualizar os cálculos de uma linha específica da tabela
-        const updateRowCalculations = (row) => {
-            const autorizadoText = row.querySelector('.value').textContent;
-            const captadoInput = row.querySelector('.currency-input');
-            const restanteCell = row.querySelector('.remaining');
-            
-            const autorizadoValue = parseCurrency(autorizadoText);
-            const captadoValue = parseCurrency(captadoInput.value || '0');
-            
-            let restanteValue = autorizadoValue - captadoValue;
-            if (restanteValue < 0) restanteValue = 0;
-            
-            restanteCell.textContent = restanteValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        };
-
-        // FUNÇÃO 4: Atualizar todo o painel de resumo de percentuais
-        const updateSummaryPanel = () => {
-            summaryContainer.innerHTML = ''; // Limpa o painel antes de recriar
-            const rows = table.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const projectName = row.cells[0].textContent;
-                const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
-                const captadoValue = parseCurrency(row.querySelector('.currency-input').value || '0');
+            const formatCurrencyInput = (input) => {
+                let value = input.value.replace(/\D/g, '');
+                value = (parseInt(value, 10) / 100).toFixed(2);
+                if (isNaN(value)) value = "0.00";
                 
-                let percentage = 0;
-                if(autorizadoValue > 0) {
-                    percentage = (captadoValue / autorizadoValue) * 100;
-                }
-                
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                card.innerHTML = `<h3>${projectName}</h3><div class="percentage">${percentage.toFixed(1)}%</div>`;
-                summaryContainer.appendChild(card);
-            });
-        };
+                const formattedValue = parseFloat(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                input.value = formattedValue;
+            };
+            
+            const parseCurrency = (text) => {
+                return parseFloat(text.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+            };
 
-        // INICIALIZAÇÃO DA PÁGINA
-        const initializePage = () => {
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const rowId = row.getAttribute('data-id');
+            const updateRowCalculations = (row) => {
+                const autorizadoText = row.querySelector('.value').textContent;
                 const captadoInput = row.querySelector('.currency-input');
+                const restanteCell = row.querySelector('.remaining');
                 
-                // Carrega o valor salvo do localStorage
-                const savedValue = localStorage.getItem(rowId);
-                if (savedValue) {
-                    captadoInput.value = savedValue;
-                    formatCurrencyInput(captadoInput);
-                }
+                const autorizadoValue = parseCurrency(autorizadoText);
+                const captadoValue = parseCurrency(captadoInput.value || '0');
                 
-                // Atualiza os cálculos da linha
-                updateRowCalculations(row);
-            });
-            // Atualiza o painel de resumo
-            updateSummaryPanel();
-        };
+                let restanteValue = autorizadoValue - captadoValue;
+                if (restanteValue < 0) restanteValue = 0;
+                
+                restanteCell.textContent = restanteValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            };
 
-        // CONFIGURAÇÃO DOS EVENTOS (OUVINTES)
-        table.addEventListener('input', (e) => {
-            // Formata o input enquanto o utilizador digita
-            if (e.target.classList.contains('currency-input')) {
-                formatCurrencyInput(e.target);
-            }
-        });
-
-        table.addEventListener('click', (e) => {
-            // Ação do botão "Atualizar"
-            if (e.target.classList.contains('update-btn')) {
-                const row = e.target.closest('tr');
-                const rowId = row.getAttribute('data-id');
-                const captadoInput = row.querySelector('.currency-input');
+            const updateSummaryPanel = () => {
+                summaryContainer.innerHTML = '';
+                const rows = table.querySelectorAll('tbody tr');
                 
-                // 1. Salva o valor no localStorage
-                localStorage.setItem(rowId, captadoInput.value);
+                rows.forEach(row => {
+                    const projectName = row.cells[0].textContent;
+                    const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
+                    const captadoValue = parseCurrency(row.querySelector('.currency-input').value || '0');
+                    
+                    let percentage = 0;
+                    if(autorizadoValue > 0) {
+                        percentage = (captadoValue / autorizadoValue) * 100;
+                    }
+                    
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.innerHTML = `<h3>${projectName}</h3><div class="percentage">${percentage.toFixed(1)}%</div>`;
+                    summaryContainer.appendChild(card);
+                });
+            };
 
-                // 2. Atualiza os cálculos da linha
-                updateRowCalculations(row);
-                
-                // 3. Atualiza o painel de resumo
+            const initializePage = () => {
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const rowId = row.getAttribute('data-id');
+                    const captadoInput = row.querySelector('.currency-input');
+                    
+                    const savedValue = localStorage.getItem(rowId);
+                    if (savedValue) {
+                        captadoInput.value = savedValue;
+                        formatCurrencyInput(captadoInput);
+                    }
+                    
+                    updateRowCalculations(row);
+                });
                 updateSummaryPanel();
+            };
 
-                // Feedback visual (opcional)
-                e.target.textContent = 'Salvo!';
-                setTimeout(() => { e.target.textContent = 'Atualizar'; }, 1500);
-            }
+            table.addEventListener('input', (e) => {
+                if (e.target.classList.contains('currency-input')) {
+                    formatCurrencyInput(e.target);
+                }
+            });
+
+            table.addEventListener('click', (e) => {
+                if (e.target.classList.contains('update-btn')) {
+                    const row = e.target.closest('tr');
+                    const rowId = row.getAttribute('data-id');
+                    const captadoInput = row.querySelector('.currency-input');
+                    
+                    localStorage.setItem(rowId, captadoInput.value);
+                    updateRowCalculations(row);
+                    updateSummaryPanel();
+
+                    e.target.textContent = 'Salvo!';
+                    setTimeout(() => { e.target.textContent = 'Atualizar'; }, 1500);
+                }
+            });
+
+            initializePage();
         });
-
-        // Roda a inicialização quando a página carrega
-        initializePage();
-    });
     </script>
 </body>
 </html>
