@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Projetos para Captação – Clube dos Tenistas da Bahia (CTB)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ctb-primary-blue: #00467f;
+            --ctb-secondary-blue: #1a75cf;
+            --ctb-white: #ffffff;
+            --ctb-background: #f0f4f8;
+            --ctb-text: #2c3e50;
+            --ctb-text-light: #5a6a7a;
+            --ctb-border: #e5e9f0;
+            --ctb-success: #27ae60;
+            --ctb-warning: #f39c12;
+            --ctb-info: #2980b9;
+            --border-radius: 16px;
+            --shadow: 0 8px 24px rgba(0, 70, 127, 0.08);
+            --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--ctb-background);
+            font-family: var(--font-family);
+            color: var(--ctb-text);
+            line-height: 1.6;
+        }
+        header {
+            background: var(--ctb-primary-blue);
+            color: var(--ctb-white);
+            padding: 24px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            box-shadow: var(--shadow);
+        }
+        header img { height: 56px; }
+        header h1 { font-size: 1.8em; font-weight: 600; }
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .projects-container { display: grid; gap: 30px; }
+        .project-card {
+            background: var(--ctb-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-left: 5px solid var(--ctb-warning); /* Destaque para captação */
+        }
+        .card-header { padding: 25px 25px 20px 25px; }
+        .card-header h2 { font-size: 1.5em; color: var(--ctb-primary-blue); margin-bottom: 4px; }
+        .location { font-weight: 500; color: var(--ctb-secondary-blue); }
+        .card-body { padding: 0 25px 25px; }
+        .card-body p { color: var(--ctb-text-light); }
+        .card-footer { background-color: #f9fafb; padding: 20px 25px; border-top: 1px solid var(--ctb-border); }
+        .card-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        .detail-item { display: flex; flex-direction: column; }
+        .detail-item .label { font-size: 0.8em; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-bottom: 4px; }
+        .detail-item .value { font-size: 1.2em; font-weight: 700; }
+        .value.autorizado { color: var(--ctb-primary-blue); }
+        .value.captado { color: var(--ctb-success); }
+        .value.restante { color: var(--ctb-warning); } /* Cor de destaque */
+        .value.conta { color: var(--ctb-text); font-size: 1.1em; font-weight: 600;}
+        .message-box {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--ctb-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--ctb-success);
+        }
+        .message-box h2 { color: var(--ctb-success); margin-bottom: 10px; }
+        footer {
+            background: var(--ctb-primary-blue);
+            color: var(--ctb-white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+        footer img { height: 60px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="ctb.png" alt="CTB Logo">
+        <h1>Projetos Abertos para Captação</h1>
+    </header>
+
+    <main>
+        <div class="projects-container" id="projects-container">
+            </div>
+    </main>
+
+    <footer>
+        <img src="ctb1.png" alt="Selo CTB">
+        <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
+        <p>Todos os direitos reservados © CTB 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chave para ler os dados da página 3 (graficos.html)
+            const STORAGE_KEY = 'ctbDashboardData';
+            const projectsContainer = document.getElementById('projects-container');
+
+            // Base de dados com as informações fixas de TODOS os projetos
+            const allProjectsData = [
+                { id: 'proj1', name: 'Estudar em Teofilândia', location: 'Teofilândia - BA', authorizedValue: 446141.44, account: '1599 / 87549-X', summary: 'Focado na união entre esporte e educação, este projeto levará a prática do tênis de mesa para crianças e adolescentes, utilizando a modalidade como ferramenta para o desenvolvimento e melhora no rendimento escolar.' },
+                { id: 'proj2', name: 'Estudar em Simões Filho', location: 'Simões Filho - BA', authorizedValue: 446141.44, account: '1599 / 87550-3', summary: 'A iniciativa busca levar o tênis de mesa como atividade de contraturno escolar para jovens, promovendo inclusão social e desenvolvimento de habilidades essenciais na Região Metropolitana de Salvador.' },
+                { id: 'proj3', name: 'Oficinas em Salvador – BA', location: 'Estado: Bahia', authorizedValue: 1422834.56, account: '1599 / 88272-0', summary: 'Um projeto de grande alcance que leva o tênis de mesa a diversas comunidades da capital e do estado, por meio de oficinas práticas e inclusivas, democratizando o acesso ao esporte.' },
+                { id: 'proj4', name: 'Festival de Esportes da Bahia', location: 'Estado: Bahia', authorizedValue: 940459.52, account: '1599 / 88298-4', summary: 'Um grande evento de celebração do esporte em todo o estado, com competições, apresentações e atividades interativas para todas as idades, engajando a comunidade e promovendo um estilo de vida ativo.' },
+                { id: 'proj5', name: 'Estudar em Barrocas', location: 'Barrocas - BA', authorizedValue: 446141.44, account: '1599 / 88311-5', summary: 'Expandindo a atuação de sucesso do CTB na cidade, este projeto implementa o modelo de integração esporte-educação para estudantes da rede pública, usando o esporte como ferramenta de desenvolvimento.' },
+                { id: 'proj6', name: 'Educar com Tênis de Mesa Ano 3', location: 'Barrocas - BA', authorizedValue: 707312.56, account: '1599 / 786660-1', summary: 'Terceira edição de um projeto consolidado e de grande sucesso. A nova fase busca expandir o atendimento e aprofundar o impacto, e ainda precisa de apoio para atingir sua meta total.' },
+                { id: 'proj7', name: 'Oficinas na Bahia', location: 'Estado: Bahia', authorizedValue: 1420619.43, account: '1599 / 00000-0', summary: 'Com um formato itinerante, este projeto leva oficinas de tênis de mesa a diferentes cidades do interior da Bahia, buscando massificar a prática esportiva e identificar potenciais atletas.' }
+            ];
+            
+            const parseCurrency = (text) => text ? (parseFloat(text.replace(/\./g, '').replace(',', '.')) || 0) : 0;
+            const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const loadAndDisplayProjects = () => {
+                const capturedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                let projectsToDisplayHTML = '';
+                
+                // Filtra e cria o HTML apenas para projetos com saldo a captar
+                allProjectsData.forEach(project => {
+                    const capturedValue = parseCurrency(capturedData[project.id]);
+                    const remainingValue = project.authorizedValue - capturedValue;
+
+                    // A LÓGICA PRINCIPAL: só adiciona o card se o valor restante for maior que um centavo
+                    if (remainingValue > 0.01) {
+                        projectsToDisplayHTML += `
+                            <div class="project-card">
+                                <div class="card-header">
+                                    <h2>${project.name}</h2>
+                                    <span class="location">${project.location}</span>
+                                </div>
+                                <div class="card-body">
+                                    <p>${project.summary}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="card-details">
+                                        <div class="detail-item">
+                                            <span class="label">Valor Autorizado</span>
+                                            <span class="value autorizado">${formatToBRL(project.authorizedValue)}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="label">Valor Captado</span>
+                                            <span class="value captado">${formatToBRL(capturedValue)}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="label">Valor a Captar</span>
+                                            <span class="value restante">${formatToBRL(remainingValue)}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="label">Dados Bancários</span>
+                                            <span class="value conta">${project.account}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+
+                // Verifica se há projetos para exibir. Se não, mostra a mensagem de sucesso.
+                if (projectsToDisplayHTML === '') {
+                    projectsContainer.innerHTML = `
+                        <div class="message-box">
+                            <h2>Parabéns!</h2>
+                            <p>No momento, todos os nossos projetos atingiram a meta de captação. Agradecemos a todos os nossos parceiros e apoiadores!</p>
+                        </div>
+                    `;
+                } else {
+                    projectsContainer.innerHTML = projectsToDisplayHTML;
+                }
+            };
+
+            loadAndDisplayProjects();
+        });
+    </script>
+</body>
+</html>
