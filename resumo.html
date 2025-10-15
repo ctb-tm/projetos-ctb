@@ -29,7 +29,6 @@
             font-family: var(--font-family);
             color: var(--ctb-text);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
         }
         header {
             background: var(--ctb-primary-blue);
@@ -49,6 +48,30 @@
             margin: 40px auto;
             padding: 0 20px;
         }
+        
+        /* --- ESTILO DO NOVO BOTÃO --- */
+        .button-container {
+            margin: 0 auto 25px auto;
+            text-align: right;
+        }
+        a.captar-btn {
+            display: inline-block;
+            background: var(--ctb-warning);
+            color: var(--ctb-white);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        a.captar-btn:hover {
+            background: #d48c11; /* Tom mais escuro */
+            transform: translateY(-2px);
+        }
+        /* --- FIM DO ESTILO DO BOTÃO --- */
+
         .projects-container { display: grid; gap: 30px; }
         .project-card {
             background: var(--ctb-white);
@@ -95,6 +118,10 @@
     </header>
 
     <main>
+        <div class="button-container">
+            <a href="captar.html" class="captar-btn">Ver Projetos para Captação</a>
+        </div>
+
         <div class="projects-container" id="projects-container">
             </div>
     </main>
@@ -107,14 +134,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Chave EXATA que a página do dashboard usa para salvar os dados
             const STORAGE_KEY = 'ctbDashboardData';
             const projectsContainer = document.getElementById('projects-container');
 
-            // 1. DADOS FIXOS DOS PROJETOS (Nossa "base de dados" interna)
             const projectsData = [
                 { id: 'proj1', name: 'Estudar em Teofilândia', location: 'Teofilândia - BA', authorizedValue: 446141.44, account: '1599 / 87549-X', summary: 'Focado na união entre esporte e educação, este projeto levará a prática do tênis de mesa para crianças e adolescentes de Teofilândia, utilizando a modalidade como ferramenta para o desenvolvimento de disciplina, foco e melhora no rendimento escolar.' },
-                { id: 'proj2', name: 'Estudar em Simões Filho', location: 'Simões Filho - BA', authorizedValue: 446141.44, account: '1599 / 87550-3', summary: 'A iniciativa busca levar o tênis de mesa como atividade de contraturno escolar para jovens de Simões Filho, promovendo inclusão social e desenvolvimento de habilidades essenciais através do esporte na Região Metropolitana de Salvador.' },
+                { id: 'proj2', name: 'Estudar em Simões Filho', location: 'Simões Filho - BA', authorizedValue: 446141.44, account: '1599 / 87550-3', summary: 'A iniciativa busca levar o tênis de mesa como atividade de contraturno escolar para jovens de Simões Filho, promovendo inclusão social e desenvolvimento de habilidades essenciais na Região Metropolitana de Salvador.' },
                 { id: 'proj3', name: 'Oficinas em Salvador – BA', location: 'Estado: Bahia', authorizedValue: 1422834.56, account: '1599 / 88272-0', summary: 'Um projeto de grande sucesso que democratizou o acesso ao tênis de mesa em Salvador e outras regiões. Agradecemos aos patrocinadores por tornarem este sonho realidade!' },
                 { id: 'proj4', name: 'Festival de Esportes da Bahia', location: 'Estado: Bahia', authorizedValue: 940459.52, account: '1599 / 88298-4', summary: 'Um grande evento estadual que celebrou e promoveu diversas modalidades esportivas, engajando milhares de pessoas e incentivando um estilo de vida ativo. Agradecemos a todos que participaram e apoiaram!' },
                 { id: 'proj5', name: 'Estudar em Barrocas', location: 'Barrocas - BA', authorizedValue: 446141.44, account: '1599 / 88311-5', summary: 'Expandindo a atuação de sucesso do CTB na cidade, este projeto implementa o modelo de integração esporte-educação para estudantes da rede pública, usando o tênis de mesa como ferramenta para o desenvolvimento de habilidades socioemocionais.' },
@@ -122,12 +147,10 @@
                 { id: 'proj7', name: 'Oficinas na Bahia', location: 'Estado: Bahia', authorizedValue: 1420619.43, account: '1599 / 00000-0', summary: 'Com um formato itinerante, este projeto de sucesso levou o tênis de mesa a diversas cidades do interior, massificando o esporte e promovendo a integração regional. Agradecemos aos parceiros!' }
             ];
 
-            // Funções auxiliares para formatação e conversão de valores
             const parseCurrency = (text) => text ? (parseFloat(text.replace(/\./g, '').replace(',', '.')) || 0) : 0;
             const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
             const loadAndDisplayProjects = () => {
-                // 2. BUSCA OS DADOS DINÂMICOS salvos pelo dashboard
                 const savedDataJSON = localStorage.getItem(STORAGE_KEY);
                 const capturedData = JSON.parse(savedDataJSON || '{}');
 
@@ -136,15 +159,13 @@
                     return;
                 }
 
-                projectsContainer.innerHTML = ''; // Limpa o container antes de preencher
+                projectsContainer.innerHTML = ''; 
 
-                // 3. CRIA OS CARDS, combinando dados fixos e dinâmicos
                 projectsData.forEach(project => {
                     const capturedValueString = capturedData[project.id] || '0,00';
                     const capturedValue = parseCurrency(capturedValueString);
                     const remainingValue = project.authorizedValue - capturedValue;
 
-                    // Lógica para definir o status do projeto
                     let statusClass = 'status-aberto';
                     let statusText = 'Aberto para Captação';
                     if (capturedValue > 0) {
@@ -157,7 +178,6 @@
                         }
                     }
 
-                    // Monta o HTML do card com os dados corretos
                     const cardHTML = `
                         <div class="project-card">
                             <div class="card-header">
@@ -184,7 +204,6 @@
                 });
             };
 
-            // Inicia o processo ao carregar a página
             loadAndDisplayProjects();
         });
     </script>
