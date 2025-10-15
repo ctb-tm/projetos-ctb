@@ -74,6 +74,23 @@
             max-height: 250px;
         }
 
+        .chart-legend {
+            background: var(--ctb-primary-blue);
+            color: var(--ctb-white);
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 10px auto 30px auto;
+            max-width: 600px;
+            font-weight: 500;
+            font-size: 0.95em;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .chart-legend span { display: block; }
+
         .progress-summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -127,22 +144,13 @@
             font-size: 0.95em;
         }
 
-        tbody tr:nth-child(even) {
-            background: #f4f8fc;
-        }
-
-        tbody tr:hover {
-            background-color: #eef5fb;
-        }
+        tbody tr:nth-child(even) { background: #f4f8fc; }
+        tbody tr:hover { background-color: #eef5fb; }
 
         .value { font-weight: 600; color: var(--ctb-primary-blue); }
         .remaining { font-weight: 600; color: var(--ctb-secondary-blue); }
 
-        .input-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .input-group { display: flex; gap: 8px; align-items: center; }
 
         input.currency-input {
             width: 120px;
@@ -164,9 +172,7 @@
             transition: background var(--transition);
         }
 
-        button.update-btn:hover {
-            background: var(--ctb-success);
-        }
+        button.update-btn:hover { background: var(--ctb-success); }
 
         footer {
             background: var(--ctb-primary-blue);
@@ -176,10 +182,7 @@
             margin-top: 50px;
         }
 
-        footer img {
-            height: 60px;
-            margin-bottom: 15px;
-        }
+        footer img { height: 60px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -191,6 +194,12 @@
     <main>
         <div id="chart-container">
             <canvas id="captacaoChart"></canvas>
+        </div>
+
+        <div id="chart-legend" class="chart-legend">
+            <span id="totalAutorizado">Total Autorizado: R$ 0,00</span>
+            <span id="totalCaptado">Total Captado: R$ 0,00</span>
+            <span id="percentualGeral">0% do total captado</span>
         </div>
 
         <section id="progress-summary-container" class="progress-summary"></section>
@@ -272,6 +281,9 @@
             const table = document.getElementById('projects-table');
             const summaryContainer = document.getElementById('progress-summary-container');
             const ctx = document.getElementById('captacaoChart');
+            const totalAutorizadoEl = document.getElementById('totalAutorizado');
+            const totalCaptadoEl = document.getElementById('totalCaptado');
+            const percentualGeralEl = document.getElementById('percentualGeral');
 
             let chartInstance;
 
@@ -296,6 +308,23 @@
                 if (restanteValue < 0) restanteValue = 0;
 
                 restanteCell.textContent = restanteValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            };
+
+            const updateLegend = () => {
+                const rows = table.querySelectorAll('tbody tr');
+                let totalAutorizado = 0;
+                let totalCaptado = 0;
+
+                rows.forEach(row => {
+                    totalAutorizado += parseCurrency(row.querySelector('.value').textContent);
+                    totalCaptado += parseCurrency(row.querySelector('.currency-input').value || '0');
+                });
+
+                totalAutorizadoEl.textContent = `Total Autorizado: ${totalAutorizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+                totalCaptadoEl.textContent = `Total Captado: ${totalCaptado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+
+                let percentual = totalAutorizado > 0 ? (totalCaptado / totalAutorizado) * 100 : 0;
+                percentualGeralEl.textContent = `${percentual.toFixed(1)}% do total captado`;
             };
 
             const updateChart = () => {
@@ -368,42 +397,4 @@
                     summaryContainer.appendChild(card);
                 });
                 updateChart();
-            };
-
-            const initializePage = () => {
-                const rows = table.querySelectorAll('tbody tr');
-                rows.forEach(row => {
-                    const rowId = row.getAttribute('data-id');
-                    const captadoInput = row.querySelector('.currency-input');
-                    const savedValue = localStorage.getItem(rowId);
-                    if (savedValue) {
-                        captadoInput.value = savedValue;
-                        formatCurrencyInput(captadoInput);
-                    }
-                    updateRowCalculations(row);
-                });
-                updateSummaryPanel();
-            };
-
-            table.addEventListener('input', (e) => {
-                if (e.target.classList.contains('currency-input')) formatCurrencyInput(e.target);
-            });
-
-            table.addEventListener('click', (e) => {
-                if (e.target.classList.contains('update-btn')) {
-                    const row = e.target.closest('tr');
-                    const rowId = row.getAttribute('data-id');
-                    const captadoInput = row.querySelector('.currency-input');
-                    localStorage.setItem(rowId, captadoInput.value);
-                    updateRowCalculations(row);
-                    updateSummaryPanel();
-                    e.target.textContent = 'Salvo!';
-                    setTimeout(() => e.target.textContent = 'Atualizar', 1500);
-                }
-            });
-
-            initializePage();
-        });
-    </script>
-</body>
-</html>
+               
