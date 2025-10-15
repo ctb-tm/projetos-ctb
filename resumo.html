@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Nossos Projetos – Clube dos Tenistas da Bahia (CTB)</title>
+    <title>Resumo dos Projetos – Clube dos Tenistas da Bahia (CTB)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,101 +43,41 @@
             box-shadow: var(--shadow);
         }
         header img { height: 56px; }
-        header h1 {
-            font-size: 1.8em;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+        header h1 { font-size: 1.8em; font-weight: 600; }
         main {
             max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
         }
-        .projects-container {
-            display: grid;
-            gap: 30px;
-        }
+        .projects-container { display: grid; gap: 30px; }
         .project-card {
             background: var(--ctb-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
         }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 32px rgba(0, 70, 127, 0.12);
-        }
-        .card-header {
-            padding: 25px 25px 20px 25px;
-            border-bottom: 1px solid var(--ctb-border);
-        }
-        .card-header h2 {
-            font-size: 1.5em;
-            color: var(--ctb-primary-blue);
-            margin-bottom: 4px;
-        }
-        .location-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .location {
-            font-weight: 500;
-            color: var(--ctb-secondary-blue);
-        }
-        .status-badge {
-            font-size: 0.8em;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-            color: var(--ctb-white);
-        }
+        .card-header { padding: 25px 25px 20px 25px; border-bottom: 1px solid var(--ctb-border); }
+        .card-header h2 { font-size: 1.5em; color: var(--ctb-primary-blue); margin-bottom: 4px; }
+        .location-status { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .location { font-weight: 500; color: var(--ctb-secondary-blue); }
+        .status-badge { font-size: 0.8em; font-weight: 600; padding: 4px 12px; border-radius: 20px; color: var(--ctb-white); }
         .status-aberto { background-color: var(--ctb-info); }
         .status-parcial { background-color: var(--ctb-warning); }
         .status-captado { background-color: var(--ctb-success); }
-
-        .card-body {
-            padding: 20px 25px 25px;
-            flex-grow: 1;
-        }
-        .card-body p {
-            color: var(--ctb-text-light);
-            margin-bottom: 20px;
-        }
-        .card-footer {
-            background-color: #f9fafb;
-            padding: 20px 25px;
-            border-top: 1px solid var(--ctb-border);
-        }
-        .card-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .detail-item .label {
-            font-size: 0.8em;
-            font-weight: 600;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .detail-item .value {
-            font-size: 1.1em;
-            font-weight: 600;
-        }
+        .card-body { padding: 20px 25px 25px; flex-grow: 1; }
+        .card-body p { color: var(--ctb-text-light); margin-bottom: 20px; }
+        .card-footer { background-color: #f9fafb; padding: 20px 25px; border-top: 1px solid var(--ctb-border); }
+        .card-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        .detail-item { display: flex; flex-direction: column; }
+        .detail-item .label { font-size: 0.8em; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-bottom: 4px; }
+        .detail-item .value { font-size: 1.1em; font-weight: 600; }
         .value.autorizado { color: var(--ctb-primary-blue); }
         .value.captado { color: var(--ctb-success); }
         .value.restante { color: var(--ctb-warning); }
         .value.conta { color: var(--ctb-text); }
+        .no-data { text-align: center; padding: 40px; background-color: var(--ctb-white); border-radius: var(--border-radius); }
         footer {
             background: var(--ctb-primary-blue);
             color: var(--ctb-white);
@@ -151,160 +91,12 @@
 <body>
     <header>
         <img src="ctb.png" alt="CTB Logo">
-        <h1>Nossos Projetos Aprovados</h1>
+        <h1>Resumo Detalhado dos Projetos</h1>
     </header>
 
     <main>
-        <div class="projects-container">
-
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Estudar em Teofilândia</h2>
-                    <div class="location-status">
-                        <span class="location">Cidade: Teofilândia - BA</span>
-                        <span class="status-badge status-aberto">Aberto para Captação</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Focado na união entre esporte e educação, este projeto levará a prática do tênis de mesa para crianças e adolescentes de Teofilândia, utilizando a modalidade como ferramenta para o desenvolvimento de disciplina, foco e melhora no rendimento escolar.</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 87549-X</span></div>
-                    </div>
-                </div>
+        <div class="projects-container" id="projects-container">
             </div>
-            
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Estudar em Simões Filho</h2>
-                    <div class="location-status">
-                        <span class="location">Cidade: Simões Filho - BA</span>
-                        <span class="status-badge status-aberto">Aberto para Captação</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Com o mesmo DNA de outros projetos educacionais, a iniciativa busca levar o tênis de mesa como atividade de contraturno escolar para jovens de Simões Filho, promovendo inclusão social e desenvolvimento de habilidades essenciais através do esporte na Região Metropolitana de Salvador.</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 87550-3</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Estudar em Barrocas</h2>
-                     <div class="location-status">
-                        <span class="location">Cidade: Barrocas - BA</span>
-                        <span class="status-badge status-aberto">Aberto para Captação</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Expandindo a atuação de sucesso do CTB na cidade, este projeto implementa o modelo de integração esporte-educação para estudantes da rede pública, usando o tênis de mesa como ferramenta para o desenvolvimento de habilidades socioemocionais e cognitivas.</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 446.141,44</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 88311-5</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Educar com Tênis de Mesa Ano 3</h2>
-                    <div class="location-status">
-                        <span class="location">Cidade: Barrocas - BA</span>
-                        <span class="status-badge status-parcial">Captação Parcial</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Terceira edição de um projeto consolidado e de grande sucesso em Barrocas, que já transformou a vida de centenas de jovens. A nova fase busca expandir o atendimento e aprofundar o impacto, mas ainda precisa de apoio para atingir sua meta total.</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 707.312,56</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 152.312,56</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 555.000,00</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 786660-1</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Oficinas em Salvador – BA</h2>
-                    <div class="location-status">
-                        <span class="location">Estado: Bahia</span>
-                        <span class="status-badge status-captado">100% Captado</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Um projeto de grande sucesso que democratizou o acesso ao tênis de mesa em Salvador e outras regiões. Com captação total, a iniciativa realizou oficinas, descobriu talentos e promoveu a saúde e a integração social. Agradecemos aos patrocinadores por tornarem este sonho realidade!</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 1.422.834,56</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 1.422.834,56</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 88272-0</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Oficinas na Bahia</h2>
-                    <div class="location-status">
-                        <span class="location">Estado: Bahia</span>
-                        <span class="status-badge status-captado">100% Captado</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Com um formato itinerante, este projeto de sucesso levou o tênis de mesa a diversas cidades do interior, massificando o esporte e promovendo a integração regional. Com apoio total, o CTB demonstrou sua capacidade de execução em todo o estado. Agradecemos aos parceiros!</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 1.420.619,43</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 1.420.619,43</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 00000-0</span></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="project-card">
-                <div class="card-header">
-                    <h2>Festival de Esportes da Bahia</h2>
-                    <div class="location-status">
-                        <span class="location">Estado: Bahia</span>
-                        <span class="status-badge status-captado">100% Captado</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Um grande evento estadual que celebrou e promoveu diversas modalidades esportivas. Com 100% dos recursos captados, o festival engajou milhares de pessoas, incentivando um estilo de vida ativo e dando visibilidade ao esporte baiano. Agradecemos a todos que participaram e apoiaram!</p>
-                </div>
-                <div class="card-footer">
-                    <div class="card-details">
-                        <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">R$ 940.459,52</span></div>
-                        <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">R$ 940.459,52</span></div>
-                        <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">R$ 0,00</span></div>
-                        <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">1599 / 88298-4</span></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </main>
 
     <footer>
@@ -312,5 +104,89 @@
         <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
         <p>Todos os direitos reservados © CTB 2025</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chave EXATA que a página do dashboard usa para salvar os dados
+            const STORAGE_KEY = 'ctbDashboardData';
+            const projectsContainer = document.getElementById('projects-container');
+
+            // 1. DADOS FIXOS DOS PROJETOS (Nossa "base de dados" interna)
+            const projectsData = [
+                { id: 'proj1', name: 'Estudar em Teofilândia', location: 'Teofilândia - BA', authorizedValue: 446141.44, account: '1599 / 87549-X', summary: 'Focado na união entre esporte e educação, este projeto levará a prática do tênis de mesa para crianças e adolescentes de Teofilândia, utilizando a modalidade como ferramenta para o desenvolvimento de disciplina, foco e melhora no rendimento escolar.' },
+                { id: 'proj2', name: 'Estudar em Simões Filho', location: 'Simões Filho - BA', authorizedValue: 446141.44, account: '1599 / 87550-3', summary: 'A iniciativa busca levar o tênis de mesa como atividade de contraturno escolar para jovens de Simões Filho, promovendo inclusão social e desenvolvimento de habilidades essenciais através do esporte na Região Metropolitana de Salvador.' },
+                { id: 'proj3', name: 'Oficinas em Salvador – BA', location: 'Estado: Bahia', authorizedValue: 1422834.56, account: '1599 / 88272-0', summary: 'Um projeto de grande sucesso que democratizou o acesso ao tênis de mesa em Salvador e outras regiões. Agradecemos aos patrocinadores por tornarem este sonho realidade!' },
+                { id: 'proj4', name: 'Festival de Esportes da Bahia', location: 'Estado: Bahia', authorizedValue: 940459.52, account: '1599 / 88298-4', summary: 'Um grande evento estadual que celebrou e promoveu diversas modalidades esportivas, engajando milhares de pessoas e incentivando um estilo de vida ativo. Agradecemos a todos que participaram e apoiaram!' },
+                { id: 'proj5', name: 'Estudar em Barrocas', location: 'Barrocas - BA', authorizedValue: 446141.44, account: '1599 / 88311-5', summary: 'Expandindo a atuação de sucesso do CTB na cidade, este projeto implementa o modelo de integração esporte-educação para estudantes da rede pública, usando o tênis de mesa como ferramenta para o desenvolvimento de habilidades socioemocionais.' },
+                { id: 'proj6', name: 'Educar com Tênis de Mesa Ano 3', location: 'Barrocas - BA', authorizedValue: 707312.56, account: '1599 / 786660-1', summary: 'Terceira edição de um projeto consolidado e de grande sucesso. A nova fase busca expandir o atendimento e aprofundar o impacto, e ainda precisa de apoio para atingir sua meta total.' },
+                { id: 'proj7', name: 'Oficinas na Bahia', location: 'Estado: Bahia', authorizedValue: 1420619.43, account: '1599 / 00000-0', summary: 'Com um formato itinerante, este projeto de sucesso levou o tênis de mesa a diversas cidades do interior, massificando o esporte e promovendo a integração regional. Agradecemos aos parceiros!' }
+            ];
+
+            // Funções auxiliares para formatação e conversão de valores
+            const parseCurrency = (text) => text ? (parseFloat(text.replace(/\./g, '').replace(',', '.')) || 0) : 0;
+            const formatToBRL = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const loadAndDisplayProjects = () => {
+                // 2. BUSCA OS DADOS DINÂMICOS salvos pelo dashboard
+                const savedDataJSON = localStorage.getItem(STORAGE_KEY);
+                const capturedData = JSON.parse(savedDataJSON || '{}');
+
+                if (Object.keys(capturedData).length === 0 && !savedDataJSON) {
+                    projectsContainer.innerHTML = '<p class="no-data">Nenhum dado de captação foi salvo ainda. Por favor, insira os valores na página do dashboard.</p>';
+                    return;
+                }
+
+                projectsContainer.innerHTML = ''; // Limpa o container antes de preencher
+
+                // 3. CRIA OS CARDS, combinando dados fixos e dinâmicos
+                projectsData.forEach(project => {
+                    const capturedValueString = capturedData[project.id] || '0,00';
+                    const capturedValue = parseCurrency(capturedValueString);
+                    const remainingValue = project.authorizedValue - capturedValue;
+
+                    // Lógica para definir o status do projeto
+                    let statusClass = 'status-aberto';
+                    let statusText = 'Aberto para Captação';
+                    if (capturedValue > 0) {
+                        if (capturedValue >= project.authorizedValue) {
+                            statusClass = 'status-captado';
+                            statusText = '100% Captado';
+                        } else {
+                            statusClass = 'status-parcial';
+                            statusText = 'Captação Parcial';
+                        }
+                    }
+
+                    // Monta o HTML do card com os dados corretos
+                    const cardHTML = `
+                        <div class="project-card">
+                            <div class="card-header">
+                                <h2>${project.name}</h2>
+                                <div class="location-status">
+                                    <span class="location">${project.location}</span>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>${project.summary}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-details">
+                                    <div class="detail-item"><span class="label">Valor Autorizado</span><span class="value autorizado">${formatToBRL(project.authorizedValue)}</span></div>
+                                    <div class="detail-item"><span class="label">Valor Captado</span><span class="value captado">${formatToBRL(capturedValue)}</span></div>
+                                    <div class="detail-item"><span class="label">Valor Restante</span><span class="value restante">${formatToBRL(remainingValue < 0 ? 0 : remainingValue)}</span></div>
+                                    <div class="detail-item"><span class="label">Dados Bancários</span><span class="value conta">${project.account}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    projectsContainer.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            };
+
+            // Inicia o processo ao carregar a página
+            loadAndDisplayProjects();
+        });
+    </script>
 </body>
 </html>
