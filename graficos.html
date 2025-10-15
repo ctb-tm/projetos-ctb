@@ -13,12 +13,12 @@
             --ctb-primary-blue: #00467f;
             --ctb-secondary-blue: #1a75cf;
             --ctb-white: #ffffff;
-            --ctb-background: #f9fbfd;
+            --ctb-background: #f0f4f8;
             --ctb-text: #2c3e50;
             --ctb-border: #e5e9f0;
-            --ctb-success: #2ecc71;
+            --ctb-success: #27ae60;
+            --ctb-warning: #f39c12;
             --border-radius: 16px;
-            --transition: 0.3s ease;
             --shadow: 0 8px 24px rgba(0, 70, 127, 0.08);
             --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
@@ -52,6 +52,31 @@
             margin: 40px auto;
             padding: 0 20px;
         }
+
+        /* --- ESTILO DO NOVO BOTÃO --- */
+        .button-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: right;
+        }
+        a.summary-btn {
+            display: inline-block;
+            background: var(--ctb-success);
+            color: var(--ctb-white);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        a.summary-btn:hover {
+            background: #219d52; /* Tom mais escuro */
+            transform: translateY(-2px);
+        }
+        /* --- FIM DO ESTILO DO BOTÃO --- */
+
         #chart-container {
             background: var(--ctb-white);
             border-radius: var(--border-radius);
@@ -79,7 +104,6 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        .chart-legend span { display: block; }
         .progress-summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -103,9 +127,6 @@
             margin-bottom: 8px;
             color: var(--ctb-primary-blue);
             min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .project-card .percentage {
             font-size: 2.2em;
@@ -132,7 +153,6 @@
         }
         tbody tr:last-child td { border-bottom: none; }
         tbody tr:nth-child(even) { background: #f4f8fc; }
-        tbody tr:hover { background-color: #eef5fb; }
         .value { font-weight: 600; color: var(--ctb-primary-blue); }
         .remaining { font-weight: 600; color: #c0392b; }
         .input-group { display: flex; gap: 8px; align-items: center; }
@@ -143,7 +163,6 @@
             border-radius: 6px;
             text-align: right;
             font-size: 0.9em;
-            font-family: var(--font-family);
         }
         button.update-btn {
             background: var(--ctb-primary-blue);
@@ -174,6 +193,10 @@
     </header>
 
     <main>
+        <div class="button-container">
+            <a href="resumo.html" class="summary-btn">Ver Resumo Detalhado</a>
+        </div>
+
         <div id="chart-container">
             <canvas id="captacaoChart"></canvas>
         </div>
@@ -268,7 +291,6 @@
         const percentualGeralEl = document.getElementById('percentualGeral');
 
         let chartInstance;
-        
         const STORAGE_KEY = 'ctbDashboardData';
 
         const parseCurrency = (text) => {
@@ -280,18 +302,12 @@
 
         const loadData = () => {
             const savedData = localStorage.getItem(STORAGE_KEY);
-            if (!savedData) {
-                console.log('Nenhum dado encontrado no localStorage.');
-                return;
-            }
-            
+            if (!savedData) return;
             const data = JSON.parse(savedData);
-            
             table.querySelectorAll('tbody tr').forEach(row => {
                 const id = row.dataset.id;
                 if (id && data[id]) {
-                    const input = row.querySelector('.currency-input');
-                    input.value = data[id];
+                    row.querySelector('.currency-input').value = data[id];
                 }
             });
         };
@@ -300,68 +316,55 @@
             const data = {};
             table.querySelectorAll('tbody tr').forEach(row => {
                 const id = row.dataset.id;
-                const value = row.querySelector('.currency-input').value;
-                if (id) data[id] = value;
+                if (id) data[id] = row.querySelector('.currency-input').value;
             });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         };
 
         const formatCurrencyInput = (input) => {
             let value = input.value.replace(/\D/g, '');
-            if (value === '') {
-                input.value = '';
-                return;
-            }
+            if (value === '') { input.value = ''; return; }
             value = (parseInt(value, 10) / 100);
             input.value = value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         };
 
         const updateRowCalculations = (row) => {
-            const autorizadoValue = parseCurrency(row.querySelector('.value').textContent);
-            const captadoValue = parseCurrency(row.querySelector('.currency-input').value);
-            const restanteCell = row.querySelector('.remaining');
-            let restanteValue = autorizadoValue - captadoValue;
-            restanteCell.textContent = formatToBRL(restanteValue < 0 ? 0 : restanteValue);
+            const authVal = parseCurrency(row.querySelector('.value').textContent);
+            const captVal = parseCurrency(row.querySelector('.currency-input').value);
+            row.querySelector('.remaining').textContent = formatToBRL(authVal - captVal < 0 ? 0 : authVal - captVal);
         };
         
         const updateLegend = () => {
-            const rows = table.querySelectorAll('tbody tr');
-            let totalAutorizado = 0, totalCaptado = 0;
-            rows.forEach(row => {
-                totalAutorizado += parseCurrency(row.querySelector('.value').textContent);
-                totalCaptado += parseCurrency(row.querySelector('.currency-input').value);
+            let totalAuth = 0, totalCapt = 0;
+            table.querySelectorAll('tbody tr').forEach(row => {
+                totalAuth += parseCurrency(row.querySelector('.value').textContent);
+                totalCapt += parseCurrency(row.querySelector('.currency-input').value);
             });
-            totalAutorizadoEl.textContent = `Total Autorizado: ${formatToBRL(totalAutorizado)}`;
-            totalCaptadoEl.textContent = `Total Captado: ${formatToBRL(totalCaptado)}`;
-            let percentual = totalAutorizado > 0 ? (totalCaptado / totalAutorizado) * 100 : 0;
-            percentualGeralEl.textContent = `${percentual.toFixed(1)}% do total captado`;
+            totalAutorizadoEl.textContent = `Total Autorizado: ${formatToBRL(totalAuth)}`;
+            totalCaptadoEl.textContent = `Total Captado: ${formatToBRL(totalCapt)}`;
+            percentualGeralEl.textContent = `${(totalAuth > 0 ? (totalCapt / totalAuth) * 100 : 0).toFixed(1)}% do total captado`;
         };
         
         const updateChart = () => {
             if (chartInstance) chartInstance.destroy();
-            const rows = table.querySelectorAll('tbody tr');
-            const labels = Array.from(rows).map(row => row.cells[0].textContent);
-            const data = Array.from(rows).map(row => {
-                const autorizado = parseCurrency(row.querySelector('.value').textContent);
-                const captado = parseCurrency(row.querySelector('.currency-input').value);
-                return autorizado > 0 ? ((captado / autorizado) * 100).toFixed(1) : 0;
+            const labels = Array.from(table.querySelectorAll('tbody tr')).map(r => r.cells[0].textContent);
+            const data = Array.from(table.querySelectorAll('tbody tr')).map(r => {
+                const auth = parseCurrency(r.querySelector('.value').textContent);
+                const capt = parseCurrency(r.querySelector('.currency-input').value);
+                return auth > 0 ? ((capt / auth) * 100).toFixed(1) : 0;
             });
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: { labels, datasets: [{
-                    label: 'Percentual Captado (%)',
-                    data,
-                    backgroundColor: 'rgba(26, 117, 207, 0.6)',
-                    borderColor: '#00467f',
-                    borderWidth: 2,
-                    borderRadius: 6
+                    label: 'Percentual Captado (%)', data,
+                    backgroundColor: 'rgba(26, 117, 207, 0.6)', borderColor: '#00467f',
+                    borderWidth: 2, borderRadius: 6
                 }]},
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true, max: 100, ticks: { color: '#00467f', callback: v => `${v}%` }, grid: { color: '#dbe9f5' } },
+                        y: { beginAtZero: true, max: 100, ticks: { color: '#00467f', callback: v => `${v}%` } },
                         x: { ticks: { color: '#00467f' }, grid: { display: false } }
                     },
                     plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${parseFloat(c.raw).toFixed(1)}% captado` } } }
@@ -372,13 +375,12 @@
         const updateSummaryPanel = () => {
             summaryContainer.innerHTML = '';
             table.querySelectorAll('tbody tr').forEach(row => {
-                const projectName = row.cells[0].textContent;
-                const autorizado = parseCurrency(row.querySelector('.value').textContent);
-                const captado = parseCurrency(row.querySelector('.currency-input').value);
-                let percentage = autorizado > 0 ? (captado / autorizado) * 100 : 0;
                 const card = document.createElement('div');
                 card.className = 'project-card';
-                card.innerHTML = `<h3>${projectName}</h3><div class='percentage'>${percentage.toFixed(1)}%</div>`;
+                const auth = parseCurrency(row.querySelector('.value').textContent);
+                const capt = parseCurrency(row.querySelector('.currency-input').value);
+                const perc = auth > 0 ? (capt / auth) * 100 : 0;
+                card.innerHTML = `<h3>${row.cells[0].textContent}</h3><div class='percentage'>${perc.toFixed(1)}%</div>`;
                 summaryContainer.appendChild(card);
             });
         };
@@ -396,13 +398,9 @@
                 saveData();
             }
         });
-
         table.addEventListener('input', (e) => {
-            if (e.target.classList.contains('currency-input')) {
-                formatCurrencyInput(e.target);
-            }
+            if (e.target.classList.contains('currency-input')) formatCurrencyInput(e.target);
         });
-
         table.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.classList.contains('currency-input')) {
                 e.preventDefault();
