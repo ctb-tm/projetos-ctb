@@ -1,198 +1,268 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Infográfico CTB – Pagina 2</title>
-  <style>
-    :root {
-      --ctb-blue: #00467f;
-      --ctb-light-blue: #1a75cf;
-      --ctb-white: #ffffff;
-      --ctb-gray: #f8f9fa;
-      --ctb-text: #2c3e50;
-      --border-radius: 12px;
-      --transition: 0.3s ease;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      background: var(--ctb-gray);
-      font-family: 'Segoe UI', sans-serif;
-      color: var(--ctb-text);
-      padding: 20px;
-    }
-    .ctb-header, .ctb-footer {
-      background: var(--ctb-blue);
-      color: var(--ctb-white);
-      text-align: center;
-      padding: 20px;
-    }
-    .ctb-header img {
-      height: 50px;
-      vertical-align: middle;
-      margin-right: 15px;
-    }
-    .ctb-header h1 {
-      display: inline-block;
-      font-size: 1.8em;
-      vertical-align: middle;
-    }
-    .infographic {
-      background: var(--ctb-white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      overflow: hidden;
-      margin-top: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 14px;
-      text-align: left;
-      font-size: 0.9em;
-    }
-    thead {
-      background: var(--ctb-blue);
-      color: var(--ctb-white);
-    }
-    tbody tr:nth-child(odd) {
-      background: var(--ctb-gray);
-    }
-    tbody tr:nth-child(even) {
-      background: var(--ctb-white);
-    }
-    tbody tr:hover {
-      background: var(--ctb-light-blue);
-      color: var(--ctb-white);
-      transition: var(--transition);
-    }
-    .value {
-      font-weight: 600;
-      color: var(--ctb-text);
-    }
-    .captured, .remaining {
-      font-weight: 600;
-      width: 100px;
-    }
-    .remaining::before { content: "↻ "; }
-    input[type="number"] {
-      width: 100px;
-      padding: 6px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      text-align: right;
-    }
-    button {
-      padding: 6px 12px;
-      margin-left: 4px;
-      background: var(--ctb-blue);
-      color: var(--ctb-white);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    button:hover {
-      background: var(--ctb-light-blue);
-    }
-  </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Infográfico CTB – Acompanhamento de Captação</title>
+    
+    <style>
+        /* Variáveis de cores e estilos para fácil manutenção */
+        :root {
+            --ctb-blue-dark: #00467f;
+            --ctb-blue-light: #1a75cf;
+            --ctb-white: #ffffff;
+            --ctb-background: #f0f4f8; /* Um cinza mais azulado e suave */
+            --ctb-text: #34495e;
+            --ctb-border: #dfe6e9;
+            --border-radius: 12px;
+            --transition: 0.3s ease;
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        /* Reset básico e configurações globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo geral do corpo da página */
+        body {
+            background: var(--ctb-background);
+            font-family: var(--font-family);
+            color: var(--ctb-text);
+            padding: 20px;
+        }
+        
+        /* Container principal para centralizar o conteúdo */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Estilo do cabeçalho com gradiente */
+        .ctb-header {
+            background: linear-gradient(90deg, var(--ctb-blue-light), var(--ctb-blue-dark));
+            color: var(--ctb-white);
+            text-align: center;
+            padding: 25px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ctb-header img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        .ctb-header h1 {
+            font-size: 2em;
+            font-weight: 600;
+        }
+        
+        /* Container principal do infográfico com sombra suave */
+        .infographic {
+            background: var(--ctb-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 70, 127, 0.1);
+            overflow: hidden; /* Garante que o conteúdo respeite as bordas arredondadas */
+        }
+
+        /* Estilo da tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        /* Células do cabeçalho e do corpo da tabela */
+        th, td {
+            padding: 16px;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        /* Cabeçalho da tabela - estilo minimalista */
+        thead th {
+            font-weight: 600;
+            color: var(--ctb-blue-dark);
+            border-bottom: 2px solid var(--ctb-border);
+        }
+
+        /* Linhas do corpo da tabela */
+        tbody tr {
+            border-bottom: 1px solid var(--ctb-border);
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* Efeito visual ao passar o mouse sobre uma linha */
+        tbody tr:hover {
+            background-color: var(--ctb-background);
+            transition: var(--transition);
+        }
+        
+        .value {
+            font-weight: 600;
+        }
+
+        .remaining {
+            font-weight: 600;
+            color: var(--ctb-blue-light);
+        }
+        
+        /* Estilo moderno para o campo de input */
+        input[type="number"] {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid var(--ctb-border);
+            border-radius: 6px;
+            text-align: right;
+            font-family: var(--font-family);
+            font-size: 0.95em;
+            transition: var(--transition);
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--ctb-blue-light);
+            box-shadow: 0 0 5px rgba(26, 117, 207, 0.2);
+        }
+        
+        /* Estilo do rodapé */
+        .ctb-footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        .ctb-footer img {
+            height: 60px; /* Ajuste o tamanho do novo logo se necessário */
+            margin-bottom: 15px;
+        }
+
+    </style>
 </head>
 <body>
+    <div class="container">
+        <header class="ctb-header">
+            <img src="ctb.png" alt="CTB Logo"/>
+            <h1>Clube dos Tenistas da Bahia</h1>
+        </header>
 
-  <!-- Cabeçalho padrão CTB (mesmo da primeira página) -->
-  <div class="ctb-header">
-    <img src="logo-ctb.png" alt="CTB Logo"/>
-    <h1>Clube dos Tenistas da Bahia</h1>
-  </div>
+        <main class="infographic">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Processo</th>
+                        <th>Projeto</th>
+                        <th class="value">Autorizado</th>
+                        <th>Captado (R$)</th>
+                        <th class="remaining">Restante (R$)</th>
+                        <th>Agência</th>
+                        <th>Conta</th>
+                        <th>Até</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>71000.040486/2024-42</td>
+                        <td>Estudar em Teofilândia</td>
+                        <td class="value">R$ 446.141,44</td>
+                        <td><input type="number" class="captado-input" placeholder="0,00" min="0" step="0.01"/></td>
+                        <td class="remaining">R$ 446.141,44</td>
+                        <td>1599</td>
+                        <td>87549-X</td>
+                        <td>29/05/2027</td>
+                    </tr>
+                    <tr>
+                        <td>71000.040483/2024-17</td>
+                        <td>Estudar em Simões Filho</td>
+                        <td class="value">R$ 446.141,44</td>
+                        <td><input type="number" class="captado-input" placeholder="0,00" min="0" step="0.01"/></td>
+                        <td class="remaining">R$ 446.141,44</td>
+                        <td>1599</td>
+                        <td>87550-3</td>
+                        <td>29/05/2027</td>
+                    </tr>
+                    <tr>
+                        <td>71000.052256/2025-15</td>
+                        <td>Oficinas em Salvador – BA</td>
+                        <td class="value">R$ 1.422.834,56</td>
+                        <td><input type="number" class="captado-input" placeholder="0,00" min="0" step="0.01"/></td>
+                        <td class="remaining">R$ 1.422.834,56</td>
+                        <td>1599</td>
+                        <td>88272-0</td>
+                        <td>14/08/2027</td>
+                    </tr>
+                    <tr>
+                        <td>71000.055113/2025-57</td>
+                        <td>Festival de Esportes da Bahia</td>
+                        <td class="value">R$ 940.459,52</td>
+                        <td><input type="number" class="captado-input" placeholder="0,00" min="0" step="0.01"/></td>
+                        <td class="remaining">R$ 940.459,52</td>
+                        <td>1599</td>
+                        <td>88298-4</td>
+                        <td>14/08/2027</td>
+                    </tr>
+                    <tr>
+                        <td>71000.040438/2024-54</td>
+                        <td>Estudar em Barrocas</td>
+                        <td class="value">R$ 446.141,44</td>
+                        <td><input type="number" class="captado-input" placeholder="0,00" min="0" step="0.01"/></td>
+                        <td class="remaining">R$ 446.141,44</td>
+                        <td>1599</td>
+                        <td>88311-5</td>
+                        <td>14/08/2027</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
 
-  <!-- Tabela interativa de captação -->
-  <div class="infographic">
-    <table>
-      <thead>
-        <tr>
-          <th>Processo</th>
-          <th>Projeto</th>
-          <th>Autorizado</th>
-          <th>Captado (R$)</th>
-          <th>Restante (R$)</th>
-          <th>Agência</th>
-          <th>Conta</th>
-          <th>Até</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>71000.040486/2024-42</td>
-          <td>Estudar em Teofilândia</td>
-          <td class="value">R$ 446.141,44</td>
-          <td><input type="number" id="cap1" min="0" step="0.01"/><button onclick="atualizar(1)">Atualizar</button></td>
-          <td class="remaining" id="rest1">R$ 446.141,44</td>
-          <td>1599</td>
-          <td>87549-X</td>
-          <td>29/05/2027</td>
-        </tr>
-        <tr>
-          <td>71000.040483/2024-17</td>
-          <td>Estudar em Simões Filho</td>
-          <td class="value">R$ 446.141,44</td>
-          <td><input type="number" id="cap2" min="0" step="0.01"/><button onclick="atualizar(2)">Atualizar</button></td>
-          <td class="remaining" id="rest2">R$ 446.141,44</td>
-          <td>1599</td>
-          <td>87550-3</td>
-          <td>29/05/2027</td>
-        </tr>
-        <tr>
-          <td>71000.052256/2025-15</td>
-          <td>Oficinas em Salvador – BA</td>
-          <td class="value">R$ 1.422.834,56</td>
-          <td><input type="number" id="cap3" min="0" step="0.01"/><button onclick="atualizar(3)">Atualizar</button></td>
-          <td class="remaining" id="rest3">R$ 1.422.834,56</td>
-          <td>1599</td>
-          <td>88272-0</td>
-          <td>14/08/2027</td>
-        </tr>
-        <tr>
-          <td>71000.055113/2025-57</td>
-          <td>Festival de Esportes da Bahia</td>
-          <td class="value">R$ 940.459,52</td>
-          <td><input type="number" id="cap4" min="0" step="0.01"/><button onclick="atualizar(4)">Atualizar</button></td>
-          <td class="remaining" id="rest4">R$ 940.459,52</td>
-          <td>1599</td>
-          <td>88298-4</td>
-          <td>14/08/2027</td>
-        </tr>
-        <tr>
-          <td>71000.040438/2024-54</td>
-          <td>Estudar em Barrocas</td>
-          <td class="value">R$ 446.141,44</td>
-          <td><input type="number" id="cap5" min="0" step="0.01"/><button onclick="atualizar(5)">Atualizar</button></td>
-          <td class="remaining" id="rest5">R$ 446.141,44</td>
-          <td>1599</td>
-          <td>88311-5</td>
-          <td>14/08/2027</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <footer class="ctb-footer">
+            <img src="ctb1.png" alt="Selo CTB"/>
+            <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
+            <p>Todos os direitos reservados © CTB 2025</p>
+        </footer>
+    </div>
 
-  <!-- Rodapé padrão CTB (mesmo da primeira página) -->
-  <div class="ctb-footer">
-    <p>Clube dos Tenistas da Bahia – CNPJ: 23.146.328/0001-16</p>
-    <p>Todos os direitos reservados © CTB 2025</p>
-  </div>
-
-  <script>
-    // Função para atualizar valor restante
-    function atualizar(i) {
-      const autorizado = parseFloat(document.querySelector(`#rest${i}`).textContent.replace(/[^0-9\,]/g, '').replace(',', '.'));
-      let captado = parseFloat(document.getElementById(`cap${i}`).value) || 0;
-      let restante = autorizado - captado;
-      if (restante < 0) restante = 0;
-      document.getElementById(`rest${i}`).textContent = 'R$ ' + restante.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    }
-  </script>
-
+    <script>
+        // Função para formatar números como moeda brasileira (BRL)
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+    
+        // Seleciona todos os campos de input de captação
+        document.querySelectorAll('.captado-input').forEach(input => {
+            // Adiciona um "ouvinte" que dispara a função sempre que o valor do campo muda
+            input.addEventListener('input', () => {
+                const row = input.closest('tr');
+                const autorizadoText = row.querySelector('.value').textContent;
+                const restanteCell = row.querySelector('.remaining');
+                
+                // Converte o valor "Autorizado" de texto para número
+                const autorizadoValue = parseFloat(autorizadoText.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+                
+                // Pega o valor digitado no campo "Captado"
+                const captadoValue = parseFloat(input.value) || 0;
+                
+                // Calcula o valor restante
+                let restanteValue = autorizadoValue - captadoValue;
+                
+                if (restanteValue < 0) {
+                    restanteValue = 0;
+                }
+                
+                // Atualiza o texto na célula "Restante" com o valor formatado
+                restanteCell.textContent = formatCurrency(restanteValue);
+            });
+        });
+    </script>
 </body>
 </html>
